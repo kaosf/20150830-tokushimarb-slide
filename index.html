@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="ka (kaosfield)" />
+  <meta name="date" content="2015-08-30" />
+  <title>ElixirとPhoenixの紹介</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">ElixirとPhoenixの紹介</h1>
+  <p class="author">
+ka (<a href="http://www.kaosfield.net">kaosfield</a>)
+  </p>
+  <p class="date">2015-08-30</p>
+</div>
+<div id="elixirとphoenix" class="slide section level1">
+<h1>ElixirとPhoenix</h1>
+<h2 id="elixir">Elixir</h2>
+<p>Erlang VMをRuby風の文法の言語で扱える</p>
+<p>関数型の潮流を大きく汲んでいる</p>
+<p>少数のデータ型と多数の関数</p>
+<p>不変性・参照透過性</p>
+<h2 id="phoenix">Phoenix</h2>
+<p>Elixir on Rails</p>
+<p>WAP</p>
+<p>Version 1.0.0が一昨日出た</p>
+</div>
+<div id="erlang" class="slide section level1">
+<h1>Erlang</h1>
+<p>Actorモデルを採用したVM上で動作するプログラムを記述する言語</p>
+<h2 id="let-it-crashの思想"><strong>Let it crash</strong>の思想</h2>
+<p>正常系(とビジネスロジックでの例外)だけ考えればいい</p>
+<p>外部やDBとの通信エラー時のリトライ等の戦略はSupervisorに任せる</p>
+</div>
+<div id="昨今のweb-applicationの要件" class="slide section level1">
+<h1>昨今のWEB Applicationの要件</h1>
+<p>ViewはJSON APIを用意してもらってフロントエンドが勝手にやる</p>
+<p>HTML, CSS, JavaScriptは静的なコンテンツを素早く返す(動的にHTMLをリクエスト毎に生成するのは辛い)</p>
+<p>サーバサイドはJSON吐き出し飲み込みする機械に特化する</p>
+<p>JSON APIへのリクエストの頻度が高い</p>
+<p>リアルタイム通信(HTTP2, WebSocket, WebRTC)も必要</p>
+<div class="incremental">
+<p><span style="font-size:150%;color:red">その目的にElixir/Phoenixが特化してます</span></p>
+</div>
+</div>
+<div id="採用事例" class="slide section level1">
+<h1>採用事例</h1>
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/EmUX8O7KV4448z" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+</iframe>
+<div style="margin-bottom:5px">
+<strong> <a href="//www.slideshare.net/ohr486/shibuyaex-1-elixir" title="Shibuya.ex #1 Elixirを本番環境で使ってみたという事例紹介" target="_blank">Shibuya.ex #1 Elixirを本番環境で使ってみたという事例紹介</a> </strong> from <strong><a href="//www.slideshare.net/ohr486" target="_blank">Tsunenori Oohara</a></strong>
+</div>
+</div>
+<div id="erlang-vmの性能" class="slide section level1">
+<h1>Erlang VMの性能</h1>
+<blockquote>
+<p>Whatsapp1は何億人ものユーザーを抱えています。他の大半のプラットフォームでは1万以上の同時コネクションを1台のマシンで処理するのはチャレンジングだと見られていますが、Whatsappは1サーバーあたり2百万の同時コネクションをこなしています。2百万コネクションをErlangが走る1台のサーバーで。</p>
+</blockquote>
+<p><a href="http://qiita.com/HirofumiTamori/items/0dfdbada30c7d8f183fd">[翻訳] Elixir - 次に来る大物Web言語 - Qiita</a></p>
+</div>
+<div id="パフォーマンス" class="slide section level1">
+<h1>パフォーマンス</h1>
+<p><a href="http://qiita.com/ohr486/items/a6bf071f1fe26f5108ab">Elixir/cowboyとRailsのサーバーベンチマーク比較 - Qiita</a></p>
+<p>引用:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Rails</th>
+<th align="right">Elixir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Failedが出ない)最大同時接続数</td>
+<td align="left">510</td>
+<td align="right">4900</td>
+</tr>
+<tr class="even">
+<td align="left">最大同時接続時のRequest/Sec</td>
+<td align="left">722</td>
+<td align="right">4175</td>
+</tr>
+<tr class="odd">
+<td align="left">最大同時接続時のTime/Req(1リクエストあたり)</td>
+<td align="left">1.38ms</td>
+<td align="right">0.37ms</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="パフォーマンス-1" class="slide section level1">
+<h1>パフォーマンス</h1>
+<p><a href="https://github.com/mroth/phoenix-showdown#comparative-benchmark-numbers">mroth/phoenix-showdown</a></p>
+<p>via. <a href="http://qiita.com/niku/items/e846c4cbb9f1d15830cc">Phoenix Framework - Channel 日本語翻訳 - Qiita</a></p>
+<p>引用:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Framework</th>
+<th align="right">Throughput (req/s)</th>
+<th align="right">Latency (ms)</th>
+<th align="right">Consistency (σ ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Phoenix</td>
+<td align="right">43063.45</td>
+<td align="right">2.82</td>
+<td align="right">7.46</td>
+</tr>
+<tr class="even">
+<td align="left">Sinatra</td>
+<td align="right">9182.86</td>
+<td align="right">6.55</td>
+<td align="right">3.03</td>
+</tr>
+<tr class="odd">
+<td align="left">Rails</td>
+<td align="right">3274.81</td>
+<td align="right">17.25</td>
+<td align="right">6.88</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="リアルタイム通信" class="slide section level1">
+<h1>リアルタイム通信</h1>
+<p><a href="http://qiita.com/niku/items/e846c4cbb9f1d15830cc">Phoenix Framework - Channel 日本語翻訳 - Qiita</a></p>
+<p><a href="http://sssslide.com/speakerdeck.com/mizchi/ci-false10nian-falsetamenielixirwohatukusuru">次の10年のためにElixirをハックする - SSSSLIDE</a></p>
+</div>
+<div id="参考資料" class="slide section level1">
+<h1>参考資料</h1>
+<p><a href="http://shishi.hatenablog.jp/entry/2015/08/25/213432">Shibuya.ex #1 のメモ - Time's up, let's do this!</a></p>
+<p>Shibuya.exでのスライドまとめになっている</p>
+</div>
+<div id="section" class="slide section level1">
+<h1></h1>
+<p>ここから少しElixirのRubyとは毛色の違う文法紹介</p>
+</div>
+<div id="パターンマッチ" class="slide section level1">
+<h1>パターンマッチ</h1>
+<pre><code>x = 1
+1 = x # OK</code></pre>
+<pre><code>x = 1
+2 = x # ここでエラー(MatchError)になる</code></pre>
+<p>代入をしていると考えるのではなく1にxを束縛していると考えると分かりやすいかも</p>
+</div>
+<div id="パターンマッチ-1" class="slide section level1">
+<h1>パターンマッチ</h1>
+<pre><code>f = fn
+  0, 0, _ -&gt; &quot;FizzBuzz&quot;
+  0, _, _ -&gt; &quot;Fizz&quot;
+  _, 0, _ -&gt; &quot;Buzz&quot;
+  _, _, n -&gt; n
+end
+
+f.(0, 0, 1) #=&gt; &quot;FizzBuzz&quot;
+f.(0, 1, 1) #=&gt; &quot;Fizz&quot;
+f.(1, 0, 1) #=&gt; &quot;Buzz&quot;
+f.(1, 1, 2) #=&gt; 2</code></pre>
+</div>
+<div id="パイプライン演算子" class="slide section level1">
+<h1>パイプライン演算子</h1>
+<pre><code>List.flatten [1, [2], 3] #=&gt; [1, 2, 3]
+Enum.map [1, 2, 3], &amp;(&amp;1 * 2) #=&gt; [2, 4, 6]
+
+[1, [2], 3] |&gt; List.flatten |&gt; Enum.map(&amp;(&amp;1 * 2)) #=&gt; [2, 4, 6]</code></pre>
+<p>引用元: <a href="http://qiita.com/mururu/items/c6181a4e64dc182f9ad9">Elixir - パイプライン演算子のはなし - Qiita</a></p>
+<p>インスパイア元はF#</p>
+<p>Clojureの<code>-&gt;</code>マクロに似ている</p>
+</div>
+<div id="section-1" class="slide section level1">
+<h1></h1>
+<p>おわり</p>
+</div>
+</body>
+</html>
+<!-- Pandoc version:
+pandoc 1.15.0.6
+Compiled with texmath 0.8.2, highlighting-kate 0.6.
+Syntax highlighting is supported for the following languages:
+    abc, actionscript, ada, agda, apache, asn1, asp, awk, bash, bibtex, boo, c,
+    changelog, clojure, cmake, coffee, coldfusion, commonlisp, cpp, cs, css,
+    curry, d, diff, djangotemplate, dockerfile, dot, doxygen, doxygenlua, dtd,
+    eiffel, email, erlang, fasm, fortran, fsharp, gcc, glsl, gnuassembler, go,
+    haskell, haxe, html, idris, ini, isocpp, java, javadoc, javascript, json,
+    jsp, julia, kotlin, latex, lex, lilypond, literatecurry, literatehaskell,
+    lua, m4, makefile, mandoc, markdown, mathematica, matlab, maxima, mediawiki,
+    metafont, mips, modelines, modula2, modula3, monobasic, nasm, noweb,
+    objectivec, objectivecpp, ocaml, octave, opencl, pascal, perl, php, pike,
+    postscript, prolog, pure, python, r, relaxng, relaxngcompact, rest, rhtml,
+    roff, ruby, rust, scala, scheme, sci, sed, sgml, sql, sqlmysql,
+    sqlpostgresql, tcl, tcsh, texinfo, verilog, vhdl, xml, xorg, xslt, xul,
+    yacc, yaml, zsh
+Default user data directory: <DELETED>
+Copyright (C) 2006-2015 John MacFarlane
+Web:  http://pandoc.org
+This is free software; see the source for copying conditions.
+There is no warranty, not even for merchantability or fitness
+for a particular purpose.
+-->
