@@ -18,7 +18,7 @@ Erlang VMをRuby風の文法の言語で扱える
 
 Elixir on Rails
 
-WAP
+Web Application Framework
 
 Version 1.0.0が一昨日出た
 
